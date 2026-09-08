@@ -59,7 +59,7 @@ connectDB()
     // Skipped in production, and skipped whenever a real MONGODB_URI is
     // configured (that database is expected to be seeded explicitly via
     // `npm run seed`, not auto-populated on every server start).
-    if (!process.env.MONGODB_URI && process.env.NODE_ENV !== "production") {
+    if (!process.env.MONGODB_URI || process.env.AUTO_SEED === "true") {
       return seedDevelopmentAccounts();
     }
   })

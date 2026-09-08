@@ -1,11 +1,15 @@
 # Multi-stage / lightweight Node 20 + Python 3 image for SmartCity AI
 FROM node:20-slim
 
-# Install Python 3 and pip
+# Install Python 3, pip, and libraries needed for embedded DB & AI
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
     python3-setuptools \
+    ca-certificates \
+    curl \
+    libcurl4 \
+    openssl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

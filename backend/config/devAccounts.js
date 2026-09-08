@@ -48,7 +48,7 @@ const DEV_SEED_USERS = [
  * credentials can never be auto-created outside local development.
  */
 async function seedDevelopmentAccounts({ silent = false } = {}) {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" && process.env.MONGODB_URI && process.env.AUTO_SEED !== "true") {
     return { created: [], skipped: [] };
   }
 
