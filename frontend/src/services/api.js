@@ -1,5 +1,16 @@
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  // If hosted online (not on local machine), always use the live Render backend
+  if (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+    if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
+      return envUrl;
+    }
+    return "https://smartcity-ai-x6kb.onrender.com/api";
+  }
+  return envUrl || "http://localhost:5000/api";
+};
+
+const API_URL = getApiBaseUrl();
 
 // Fired whenever a protected request comes back 401 (invalid/expired token,
 // or the user no longer exists/is inactive) so AuthContext can clear the

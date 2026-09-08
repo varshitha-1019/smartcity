@@ -83,6 +83,14 @@ app.use(
       if (isDev && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
       }
+      try {
+        const hostname = new URL(origin).hostname;
+        if (hostname.endsWith(".onrender.com") || hostname.endsWith(".vercel.app")) {
+          return callback(null, true);
+        }
+      } catch {
+        // ignore invalid URL
+      }
       if (configuredOrigins.length === 0 || configuredOrigins.includes("*") || configuredOrigins.includes(origin)) {
         return callback(null, true);
       }
