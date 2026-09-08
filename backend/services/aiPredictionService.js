@@ -101,8 +101,12 @@ function startWorker() {
   workerStartingPromise = new Promise((resolve, reject) => {
     try {
       const projectRoot = path.resolve(__dirname, "..", "..");
-      const workerScript = path.join(projectRoot, "ai", "scripts", "predict_worker.py");
-      if (!fs.existsSync(workerScript)) {
+      const candidates = [
+        path.join(projectRoot, "ai", "scripts", "predict_worker.py"),
+        path.join(__dirname, "..", "ai", "scripts", "predict_worker.py"),
+      ];
+      const workerScript = candidates.find(fs.existsSync);
+      if (!workerScript) {
         return resolve(null);
       }
 
@@ -207,7 +211,11 @@ function startWorker() {
 function predictWithOneShot(imagePath) {
   return new Promise((resolve, reject) => {
     const projectRoot = path.resolve(__dirname, "..", "..");
-    const script = path.join(projectRoot, "ai", "scripts", "predict.py");
+    const candidates = [
+      path.join(projectRoot, "ai", "scripts", "predict.py"),
+      path.join(__dirname, "..", "ai", "scripts", "predict.py"),
+    ];
+    const script = candidates.find(fs.existsSync) || candidates[0];
     const python = spawn(resolvePythonExecutable(projectRoot), [script, path.resolve(imagePath)], {
       cwd: projectRoot,
       env: { ...process.env, TF_CPP_MIN_LOG_LEVEL: process.env.TF_CPP_MIN_LOG_LEVEL || "2" },

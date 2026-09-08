@@ -1,0 +1,23 @@
+{
+  "modelVersion": "urban_issue_classifier-v2",
+  "classes": [
+    "Drainage",
+    "Garbage",
+    "Human",
+    "Normal Road",
+    "Pothole",
+    "Water Leakage"
+  ],
+  "datasetCounts": {
+    "Drainage": 150,
+    "Garbage": 150,
+    "Human": 150,
+    "Normal Road": 150,
+    "Pothole": 150,
+    "Water Leakage": 150
+  },
+  "validationAccuracy": 1.0,
+  "validationLoss": 0.02396518364548683,
+  "productionModel": "urban_issue_classifier.keras",
+  "bestModel": "best_model.keras"
+}
