@@ -18,6 +18,12 @@ const DEV_SEED_USERS = [
     role: "administrator",
   },
   {
+    name: "City Super Administrator",
+    email: "superadmin@smartcity.com",
+    password: "Admin@123",
+    role: "administrator",
+  },
+  {
     name: "Pothole Authority",
     email: "pothole.authority@smartcity.com",
     password: "pothole@12",
