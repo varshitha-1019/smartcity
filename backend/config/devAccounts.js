@@ -59,7 +59,20 @@ async function seedDevelopmentAccounts({ silent = false } = {}) {
     const existing = await User.findOne({ email: seedUser.email });
 
     if (existing) {
-      skipped.push(seedUser.email);
+      if (existing.role !== seedUser.role || (seedUser.department && existing.department !== seedUser.department)) {
+        existing.role = seedUser.role;
+        if (seedUser.department) existing.department = seedUser.department;
+        if (seedUser.active !== undefined) existing.active = seedUser.active;
+        const hashedPassword = await bcrypt.hash(seedUser.password, 10);
+        existing.password = hashedPassword;
+        await existing.save();
+        created.push(seedUser.email);
+        if (!silent) {
+          console.log(`Updated ${seedUser.email} to role: ${seedUser.role}`);
+        }
+      } else {
+        skipped.push(seedUser.email);
+      }
       continue;
     }
 

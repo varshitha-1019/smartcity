@@ -29,6 +29,7 @@ COPY . .
 
 ENV PORT=10000
 ENV NODE_ENV=production
+ENV AUTO_SEED=true
 EXPOSE 10000
 
 CMD ["node", "server.js"]
