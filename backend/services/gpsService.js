@@ -352,9 +352,32 @@ function guessStampAddress(lines, coordLineIndex) {
 const stampOcrCache = new Map();
 let tesseractWorkerPromise = null;
 
+function resolvePythonExecutable() {
+  const explicit = process.env.PYTHON_PATH || process.env.PYTHON_EXECUTABLE;
+  if (explicit) return explicit;
+  const projectRoot = path.resolve(__dirname, "..", "..");
+  const candidates = process.platform === "win32"
+    ? [
+        path.join(projectRoot, ".venv", "Scripts", "python.exe"),
+        path.join(projectRoot, "ai", "venv", "Scripts", "python.exe"),
+      ]
+    : [
+        path.join(projectRoot, ".venv", "bin", "python"),
+        path.join(projectRoot, "ai", "venv", "bin", "python"),
+        path.join(projectRoot, ".venv", "bin", "python3"),
+        path.join(projectRoot, "ai", "venv", "bin", "python3"),
+        "/usr/bin/python3",
+        "/usr/local/bin/python3",
+      ];
+  return candidates.find(fs.existsSync) || (process.platform === "win32" ? "python" : "python3");
+}
+
 async function getTesseractWorker() {
   if (!tesseractWorkerPromise) {
-    tesseractWorkerPromise = Tesseract.createWorker("eng").catch((err) => {
+    const trainedDataDir = path.resolve(__dirname, "..");
+    tesseractWorkerPromise = Tesseract.createWorker("eng", 1, {
+      cachePath: trainedDataDir,
+    }).catch((err) => {
       tesseractWorkerPromise = null;
       throw err;
     });
@@ -387,56 +410,64 @@ function getFileFingerprint(filePath) {
 
 async function runTesseract(imagePath) {
   let combinedText = "";
+  const cropScript = path.join(__dirname, "crop_stamp.py");
+  const pythonExe = resolvePythonExecutable();
 
-  // 1. Fast Path: Process high-contrast focused crop of lower camera stamp area first (~200-400ms)
-  try {
-    const projectRoot = path.resolve(__dirname, "..", "..");
-    const cropScript = path.join(__dirname, "crop_stamp.py");
-    const pythonExe = process.platform === "win32"
-      ? path.join(projectRoot, ".venv", "Scripts", "python.exe")
-      : path.join(projectRoot, ".venv", "bin", "python");
-
-    const tmpCrop = path.join(__dirname, `tmp_stamp_${Date.now()}_${Math.random().toString(36).slice(2)}.png`);
-    if (fs.existsSync(pythonExe) && fs.existsSync(cropScript)) {
+  // Helper to crop and OCR a specific section
+  const tryCropSection = async (mode, timeoutMs = 5000) => {
+    if (!fs.existsSync(cropScript)) return "";
+    const tmpFile = path.join(__dirname, `tmp_${mode}_${Date.now()}_${Math.random().toString(36).slice(2)}.png`);
+    try {
       const { execFileSync } = require("child_process");
-      execFileSync(pythonExe, [cropScript, path.resolve(imagePath), tmpCrop], { timeout: 8000 });
-      if (fs.existsSync(tmpCrop)) {
+      execFileSync(pythonExe, [cropScript, path.resolve(imagePath), tmpFile, mode], { timeout: timeoutMs });
+      if (fs.existsSync(tmpFile)) {
         const worker = await getTesseractWorker();
-        const { data } = await worker.recognize(tmpCrop);
-        if (data?.text) combinedText += data.text + "\n";
-        try { fs.unlinkSync(tmpCrop); } catch (_) {}
-
-        // If coordinates were detected in the cropped stamp, return immediately for instant response!
-        if (LAT_DIR_PATTERN.test(combinedText) || LAT_STAMP_PATTERN.test(combinedText) || LAT_LONG_PAIR_PATTERN.test(combinedText)) {
-          return combinedText.trim();
-        }
+        const { data } = await worker.recognize(tmpFile);
+        try { fs.unlinkSync(tmpFile); } catch (_) {}
+        return data?.text || "";
       }
+    } catch (err) {
+      try { if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile); } catch (_) {}
     }
-  } catch (err) {
-    console.warn("[gpsService] crop stamp error:", err?.message);
+    return "";
+  };
+
+  // 1. Fast Path: Bottom 60% where standard GPS-Map-Camera / Solocator stamps live (~200-400ms)
+  const bottomText = await tryCropSection("bottom", 5000);
+  if (bottomText) {
+    combinedText += bottomText + "\n";
+    if (LAT_DIR_PATTERN.test(combinedText) || LAT_STAMP_PATTERN.test(combinedText) || LAT_LONG_PAIR_PATTERN.test(combinedText)) {
+      return combinedText.trim();
+    }
   }
 
-  // 2. Secondary Fast Path: Check top banner area (used by some camera apps)
-  try {
-    const projectRoot = path.resolve(__dirname, "..", "..");
-    const cropScript = path.join(__dirname, "crop_stamp.py");
-    const pythonExe = process.platform === "win32"
-      ? path.join(projectRoot, ".venv", "Scripts", "python.exe")
-      : path.join(projectRoot, ".venv", "bin", "python");
-
-    const tmpTop = path.join(__dirname, `tmp_top_${Date.now()}_${Math.random().toString(36).slice(2)}.png`);
-    if (fs.existsSync(pythonExe) && fs.existsSync(cropScript)) {
-      const { execFileSync } = require("child_process");
-      execFileSync(pythonExe, [cropScript, path.resolve(imagePath), tmpTop, "top"], { timeout: 6000 });
-      if (fs.existsSync(tmpTop)) {
-        const worker = await getTesseractWorker();
-        const { data } = await worker.recognize(tmpTop);
-        if (data?.text) combinedText += "\n" + data.text;
-        try { fs.unlinkSync(tmpTop); } catch (_) {}
-      }
+  // 2. Secondary Path: Stamp box card (right side card layout)
+  const boxText = await tryCropSection("stamp_box", 5000);
+  if (boxText) {
+    combinedText += boxText + "\n";
+    if (LAT_DIR_PATTERN.test(combinedText) || LAT_STAMP_PATTERN.test(combinedText) || LAT_LONG_PAIR_PATTERN.test(combinedText)) {
+      return combinedText.trim();
     }
-  } catch (err) {
-    console.warn("[gpsService] top banner crop error:", err?.message);
+  }
+
+  // 3. Tertiary Path: Top banner
+  const topText = await tryCropSection("top", 3000);
+  if (topText) {
+    combinedText += "\n" + topText;
+    if (LAT_DIR_PATTERN.test(combinedText) || LAT_STAMP_PATTERN.test(combinedText) || LAT_LONG_PAIR_PATTERN.test(combinedText)) {
+      return combinedText.trim();
+    }
+  }
+
+  // 4. Reliable Fallback: Full original image OCR (guarantees no GPS stamp is ever missed)
+  try {
+    const worker = await getTesseractWorker();
+    const { data } = await worker.recognize(path.resolve(imagePath));
+    if (data?.text) {
+      combinedText += "\n" + data.text;
+    }
+  } catch (fullErr) {
+    console.warn("[gpsService] full image OCR notice:", fullErr?.message);
   }
 
   return combinedText.trim() || null;

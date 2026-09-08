@@ -21,7 +21,7 @@ RUN cd backend && npm install --production
 # Install ultra-lightweight Python AI dependencies (~30MB total)
 RUN pip3 install --no-cache-dir --break-system-packages \
     tflite-runtime \
-    numpy \
+    "numpy<2" \
     Pillow
 
 # Copy project files needed for runtime
