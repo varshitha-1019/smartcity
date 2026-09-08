@@ -1,0 +1,7 @@
+/* Card styling shared with TrackIssue.css's .issue-card / .status rules;
+   this file exists for the component's own layout tweaks (kept minimal so
+   the two never fight each other). */
+.issue-card small {
+  color: var(--text-secondary);
+  font-size: 12.5px;
+}

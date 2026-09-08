@@ -1,0 +1,479 @@
+.report-page {
+  min-height: calc(100vh - 64px);
+  padding: 50px 20px;
+  background: var(--surface-2);
+}
+
+.report-card {
+  width: 100%;
+  max-width: 760px;
+  margin: auto;
+  padding: 40px;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+.report-card h1 {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.report-description {
+  color: var(--text-secondary);
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.report-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-card label {
+  margin: 15px 0 6px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.report-card input,
+.report-card textarea,
+.report-card select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: 0.25s;
+}
+
+.report-card input:focus,
+.report-card textarea:focus,
+.report-card select:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(2,132,199,.15);
+}
+
+.report-card textarea {
+  resize: vertical;
+}
+
+.report-card button {
+  margin-top: 24px;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--gradient-primary);
+  color: #fff;
+  box-shadow: var(--glow);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.report-card button:hover:not(:disabled) {
+  background: var(--blue-dark);
+}
+
+.report-card button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--error-soft);
+  color: var(--error-text);
+}
+
+.success-message {
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--success-soft);
+  color: var(--success-text);
+}
+
+.camera-section {
+  margin-bottom: 25px;
+}
+
+.camera-preview-container {
+  border: 1px solid var(--border);
+  width: 100%;
+  min-height: 320px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0f172a;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 18px 0;
+}
+
+.camera-preview,
+.image-preview,
+.issue-image {
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  display: block;
+}
+
+.capture-canvas {
+  display: none;
+}
+
+.camera-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.camera-btn,
+.camera-btn.secondary,
+.camera-actions label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  padding: 13px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: .25s;
+  user-select: none;
+}
+
+.camera-btn {
+  border: none;
+  background: var(--gradient-primary);
+  color: #fff;
+}
+
+.camera-btn:hover:not(:disabled) {
+  background: var(--blue-dark);
+}
+
+.camera-btn.secondary {
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  color: #fff;
+}
+
+.camera-btn.secondary:hover {
+  background: var(--navy-soft);
+}
+
+.camera-btn.danger {
+  background: var(--error);
+  color: #fff;
+  border: none;
+}
+
+.camera-btn.danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.camera-actions label {
+  background: var(--success);
+  color: white;
+}
+
+.camera-actions label:hover {
+  background: #16a34a;
+}
+
+.camera-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.geo-preview-wrap {
+  position: relative;
+}
+
+/* Non-destructive visual geo-tag preview shown on top of an uploaded
+   image (the actual uploaded file is left untouched so its EXIF GPS can
+   still be read server-side). Camera captures get the same look burned
+   directly into the photo instead - see utils/geoTag.js. */
+.geo-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 14px 16px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.35) 70%, transparent);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.geo-overlay p {
+  margin: 3px 0;
+}
+
+.geo-overlay-address {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.geo-overlay-coords {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.geo-overlay-meta {
+  font-size: 12px;
+  color: #d1d5db;
+}
+
+.manual-location {
+  margin: 18px 0;
+  padding: 15px;
+  border-radius: 8px;
+  background: var(--warning-soft);
+  border: 1px solid rgba(245,158,11,0.35);
+}
+
+.manual-location-hint {
+  margin: 0 0 12px;
+  color: var(--warning-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.manual-location-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.manual-location-row {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 160px;
+}
+
+.manual-location-row label {
+  margin: 0 0 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.manual-location-row input {
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.manual-location-form .camera-btn {
+  min-width: 160px;
+  padding: 10px 18px;
+}
+
+.manual-location-error {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--error-text);
+  font-size: 13px;
+}
+
+.location-info {
+  margin: 18px 0;
+  padding: 15px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.location-info p {
+  margin: 6px 0;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.result-card {
+  margin-top: 30px;
+  padding: 22px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius-lg);
+}
+
+.result-card.rejection-card {
+  border-left: 4px solid #ef4444;
+}
+
+.badge-rejected {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.current-location-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+  font-size: 14px;
+}
+
+.current-location-banner .location-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.current-location-banner .location-label {
+  font-weight: 700;
+  color: var(--blue);
+  flex-shrink: 0;
+}
+
+.current-location-banner .location-text {
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.result-card h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.result-card p {
+  margin: 8px 0;
+  word-break: break-word;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 768px) {
+
+  .report-page {
+    padding: 30px 15px;
+  }
+
+  .report-card {
+    padding: 25px;
+  }
+
+  .camera-preview-container {
+  border: 1px solid var(--border);
+    min-height: 260px;
+  }
+
+  .camera-actions {
+    flex-direction: column;
+  }
+
+  .camera-btn,
+  .camera-btn.secondary,
+  .camera-actions label {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .image-preview,
+  .camera-preview {
+    max-height: 450px;
+  }
+
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 480px) {
+
+  .report-page {
+    padding: 18px 10px;
+  }
+
+  .report-card {
+    padding: 18px;
+    border-radius: 10px;
+  }
+
+  .report-card h1 {
+    font-size: 24px;
+  }
+
+  .report-description {
+    font-size: 14px;
+  }
+
+  .camera-preview-container {
+  border: 1px solid var(--border);
+    min-height: 220px;
+  }
+
+  .camera-btn,
+  .camera-btn.secondary,
+  .camera-actions label,
+  .report-card button {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .image-preview,
+  .camera-preview {
+    max-height: 320px;
+  }
+
+  .location-info {
+    font-size: 13px;
+  }
+
+  .result-card {
+    padding: 16px;
+  }
+
+  .geo-overlay-address {
+    font-size: 13px;
+  }
+
+  .geo-overlay-coords {
+    font-size: 11px;
+  }
+
+  .geo-overlay-meta {
+    font-size: 10px;
+  }
+
+  .manual-location-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .manual-location-form .camera-btn {
+    width: 100%;
+    min-width: 100%;
+  }
+
+}

@@ -1,0 +1,34 @@
+.smart-city-logo .scl-building {
+  fill: var(--scl-building, #cbd5e1);
+}
+
+.smart-city-logo .scl-b3 {
+  fill: var(--scl-accent, var(--blue));
+}
+
+.smart-city-logo .scl-ground {
+  fill: var(--scl-building, #cbd5e1);
+  opacity: 0.35;
+}
+
+.smart-city-logo .scl-network {
+  stroke: var(--scl-network, #38bdf8);
+}
+
+.smart-city-logo .scl-nodes circle {
+  fill: var(--scl-node, #facc15);
+}
+
+/* Dark backgrounds (navbar, splash screen): swap to a lighter building
+   tone so the mark stays legible without shipping a second asset. */
+.smart-city-logo.on-dark .scl-building {
+  fill: #e2e8f0;
+}
+
+.smart-city-logo.on-dark .scl-ground {
+  fill: #e2e8f0;
+}
+
+.smart-city-logo.on-dark .scl-b3 {
+  fill: #38bdf8;
+}

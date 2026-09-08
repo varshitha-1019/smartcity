@@ -1,0 +1,70 @@
+.profile-page {
+  min-height: calc(100vh - 64px);
+  padding: 48px 20px;
+  background: var(--surface-2);
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container {
+  max-width: 480px;
+  width: 100%;
+  background: var(--surface);
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(15, 23, 42, 0.08);
+  padding: 32px;
+  height: fit-content;
+}
+
+.profile-container h1 {
+  margin-top: 0;
+}
+
+.profile-form {
+  display: grid;
+  gap: 6px;
+}
+
+.profile-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-top: 10px;
+}
+
+.profile-form input {
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  font: inherit;
+}
+
+.profile-form input:disabled {
+  background: var(--surface-2);
+  color: var(--text-secondary);
+}
+
+.profile-form button {
+  margin-top: 20px;
+  background: var(--blue);
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success-message {
+  background: var(--success-soft);
+  color: var(--success-text);
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}

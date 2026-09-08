@@ -1,0 +1,114 @@
+.camera-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4, 16px);
+  z-index: 1000;
+}
+
+.camera-modal {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  background: var(--navy-soft, #1e293b);
+  border: 1px solid var(--border-strong, rgba(226, 232, 240, 0.22));
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-lg, 0 22px 60px rgba(2, 6, 23, 0.55));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.camera-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4, 16px) var(--space-4, 16px) var(--space-2, 8px);
+  border-bottom: 1px solid var(--border, rgba(226, 232, 240, 0.12));
+}
+
+.camera-modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-strong, #fff);
+}
+
+.camera-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-secondary, #94a3b8);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm, 10px);
+}
+
+.camera-modal-close:hover {
+  background: var(--surface-3, rgba(51, 65, 85, 0.45));
+}
+
+.camera-modal-body {
+  padding: var(--space-4, 16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  overflow-y: auto;
+}
+
+.camera-modal-status {
+  color: var(--text-secondary, #94a3b8);
+  font-size: 14px;
+  padding: var(--space-6, 24px) 0;
+}
+
+.camera-modal-video,
+.camera-modal-preview {
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--radius-sm, 10px);
+  background: #000;
+  object-fit: contain;
+  max-height: 60vh;
+}
+
+.camera-modal-actions {
+  display: flex;
+  gap: var(--space-2, 8px);
+  flex-wrap: wrap;
+  padding: var(--space-3, 12px) var(--space-4, 16px) var(--space-4, 16px);
+  border-top: 1px solid var(--border, rgba(226, 232, 240, 0.12));
+}
+
+.camera-modal-actions button {
+  flex: 1 1 120px;
+  background: var(--gradient-primary, linear-gradient(135deg, #4f46e5 0%, #6366f1 45%, #0ea5e9 100%));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm, 10px);
+  padding: 11px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.camera-modal-actions button.secondary {
+  background: var(--surface-3, rgba(51, 65, 85, 0.45));
+  color: var(--text, #f8fafc);
+}
+
+@media (max-width: 480px) {
+  .camera-modal {
+    max-width: 100%;
+    max-height: 100vh;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .camera-modal-actions button {
+    flex: 1 1 45%;
+  }
+}

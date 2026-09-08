@@ -1,0 +1,604 @@
+/* ============================================================
+   Smart City — Global Design System (v2)
+   Deep navy / indigo / cyan · glassmorphism · ambient motion
+   UI ONLY: no application logic depends on this file.
+   ============================================================ */
+:root {
+  /* Brand — deep navy base */
+  --navy: #0f172a;
+  --navy-deep: #0a1122;
+  --navy-soft: #1e293b;
+  --slate: #334155;
+
+  /* Primary — indigo / electric blue */
+  --blue: #6366f1;
+  --blue-dark: #4f46e5;
+  --blue-soft: rgba(99, 102, 241, 0.16);
+  --sky: #0ea5e9;
+  --cyan: #06b6d4;
+  --cyan-soft: rgba(6, 182, 212, 0.16);
+
+  /* Status */
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.16);
+  --success-text: #86efac;
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.16);
+  --warning-text: #fcd34d;
+  --error: #ef4444;
+  --error-soft: rgba(239, 68, 68, 0.16);
+  --error-text: #fca5a5;
+  --info-text: #7dd3fc;
+
+  /* Surfaces & text */
+  --bg: #0b1120;
+  --surface: rgba(30, 41, 59, 0.62);
+  --surface-2: rgba(15, 23, 42, 0.55);
+  --surface-3: rgba(51, 65, 85, 0.45);
+  --card-bg: var(--surface);
+  --text: #f8fafc;
+  --text-strong: #ffffff;
+  --text-secondary: #94a3b8;
+  --border: rgba(226, 232, 240, 0.12);
+  --border-strong: rgba(226, 232, 240, 0.22);
+
+  /* Legacy aliases (kept so un-migrated rules resolve to the new palette) */
+  --text-h: var(--text);
+  --accent: var(--blue);
+  --accent-bg: var(--blue-soft);
+  --accent-border: var(--blue);
+  --code-bg: rgba(148, 163, 184, 0.14);
+  --social-bg: rgba(148, 163, 184, 0.14);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #4f46e5 0%, #6366f1 45%, #0ea5e9 100%);
+  --gradient-cyan: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  --gradient-surface: linear-gradient(160deg, rgba(51, 65, 85, 0.55), rgba(15, 23, 42, 0.62));
+
+  /* Elevation */
+  --shadow-sm: 0 2px 10px rgba(2, 6, 23, 0.35);
+  --shadow: 0 12px 35px rgba(2, 6, 23, 0.42);
+  --shadow-lg: 0 22px 60px rgba(2, 6, 23, 0.55);
+  --glow: 0 8px 24px rgba(79, 70, 229, 0.35);
+
+  /* Glass */
+  --glass-blur: blur(14px);
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --sans: 'Inter', 'Segoe UI', system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  --heading: 'Inter', 'Segoe UI', system-ui, Roboto, sans-serif;
+  --mono: ui-monospace, 'JetBrains Mono', Consolas, monospace;
+
+  font: 16px/150% var(--sans);
+  letter-spacing: 0;
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  color: var(--text);
+  background:
+    radial-gradient(1100px 700px at 12% -5%, rgba(79, 70, 229, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 92% 8%, rgba(14, 165, 233, 0.18), transparent 62%),
+    radial-gradient(900px 700px at 60% 110%, rgba(6, 182, 212, 0.14), transparent 60%),
+    linear-gradient(180deg, #0b1120 0%, #0f172a 55%, #0a1122 100%);
+  background-attachment: fixed;
+}
+
+/* ---- Ambient background: CSS-only animated tech mesh (no external asset,
+   works fully offline, sits behind every page and never blocks input). ---- */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::before {
+  background:
+    radial-gradient(closest-side, rgba(99, 102, 241, 0.20), transparent 70%) 18% 30% / 46vmax 46vmax no-repeat,
+    radial-gradient(closest-side, rgba(6, 182, 212, 0.16), transparent 70%) 78% 22% / 40vmax 40vmax no-repeat,
+    radial-gradient(closest-side, rgba(14, 165, 233, 0.14), transparent 70%) 55% 82% / 52vmax 52vmax no-repeat;
+  filter: blur(12px);
+  animation: ambient-drift 32s ease-in-out infinite alternate;
+}
+
+body::after {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at 50% 20%, rgba(0, 0, 0, 0.85), transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 20%, rgba(0, 0, 0, 0.85), transparent 78%);
+  animation: ambient-grid 44s linear infinite;
+}
+
+@keyframes ambient-drift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(2.5%, -2%, 0) scale(1.06); }
+  100% { transform: translate3d(-2%, 2.5%, 0) scale(1.02); }
+}
+
+@keyframes ambient-grid {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 64px 64px, 64px 64px; }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Page shells keep the ambient backdrop visible */
+.home-page,
+.track-page,
+.report-page,
+.profile-page,
+.notifications-page,
+.contact-page,
+.dashboard-page,
+.settings-page,
+.auth-page,
+.not-found-page,
+.issue-detail-page {
+  background: transparent;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+/* ---------------- Typography ---------------- */
+h1, h2, h3, h4 {
+  font-family: var(--heading);
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  line-height: 1.15;
+  margin: 0 0 var(--space-2);
+}
+h2 {
+  font-size: clamp(19px, 2.4vw, 24px);
+  line-height: 1.25;
+  margin: 0 0 var(--space-2);
+}
+h3 {
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 0 0 var(--space-1);
+}
+p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--info-text);
+}
+
+@media (max-width: 1024px) {
+  :root { font-size: 15px; }
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+}
+
+code {
+  font-size: 14px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+.page-state {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------- Glass surface utility ---------------- */
+.glass,
+.card {
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.22s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--border-strong);
+}
+
+/* Apply the glass treatment to the existing app containers. */
+.stat-card,
+.dashboard-section,
+.authority-card,
+.authority-issue-card,
+.dashboard-table,
+.issue-card,
+.feature-card,
+.empty-state,
+.report-card,
+.auth-card,
+.profile-container,
+.contact-container,
+.notification-item,
+.settings-card,
+.result-card,
+.manage-panel,
+.evidence-location,
+.location-info {
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+}
+
+/* ---------------- Messages & states ---------------- */
+.error-message {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--error-soft);
+  color: var(--error-text);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-size: 14px;
+  animation: ui-fade-in 0.25s ease-out both;
+}
+
+.success-message {
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--success-soft);
+  color: var(--success-text);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  font-size: 14px;
+  animation: ui-fade-in 0.25s ease-out both;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.table-actions button.danger {
+  background: var(--error-soft);
+  color: var(--error-text);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.confirm-delete {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--error-text);
+}
+
+.inline-edit-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) 0;
+}
+
+.inline-edit-form input,
+.inline-edit-form select {
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--sans);
+}
+
+.empty-state {
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background: var(--surface-2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state h2 { color: var(--text); }
+.empty-state p { color: var(--text-secondary); }
+
+/* ---------------- Status badges ---------------- */
+.status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-block;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.status-pending {
+  background: var(--warning-soft);
+  color: var(--warning-text);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+.status-assigned {
+  background: var(--cyan-soft);
+  color: #67e8f9;
+  border-color: rgba(6, 182, 212, 0.32);
+}
+
+.status-in-progress {
+  background: var(--blue-soft);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.34);
+}
+
+.status-resolved {
+  background: var(--success-soft);
+  color: var(--success-text);
+  border-color: rgba(34, 197, 94, 0.32);
+}
+
+.status-rejected {
+  background: var(--error-soft);
+  color: var(--error-text);
+  border-color: rgba(239, 68, 68, 0.32);
+}
+
+/* ---------------- Buttons ---------------- */
+button {
+  font-family: var(--sans);
+  transition: transform 0.12s ease, filter 0.16s ease, box-shadow 0.18s ease,
+    background-color 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+}
+
+button:not(:disabled):hover {
+  filter: brightness(1.06);
+}
+
+button:not(:disabled):active {
+  transform: translateY(0) scale(0.975);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(0.15);
+}
+
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-success,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: #fff;
+  box-shadow: var(--glow);
+}
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.45);
+}
+
+.btn-secondary {
+  background: var(--surface-3);
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-secondary:not(:disabled):hover {
+  background: rgba(148, 163, 184, 0.22);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.btn-outline:not(:disabled):hover {
+  border-color: var(--blue);
+  color: #c7d2fe;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #fff;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: #fff;
+}
+
+/* ---------------- Form fields ---------------- */
+input,
+select,
+textarea {
+  font-family: var(--sans);
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: rgba(15, 23, 42, 0.55);
+  color: var(--text);
+  font-size: 14.5px;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+}
+
+select option {
+  background: #0f172a;
+  color: var(--text);
+}
+
+textarea {
+  min-height: 110px;
+  padding: var(--space-3);
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px var(--blue-soft);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7c8aa3;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.6;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--sky);
+  outline-offset: 2px;
+}
+
+/* ---------------- Images ---------------- */
+img {
+  max-width: 100%;
+}
+
+/* ---------------- Skeletons & animations ---------------- */
+.skeleton {
+  background: linear-gradient(90deg, rgba(148,163,184,0.10) 25%, rgba(148,163,184,0.22) 37%, rgba(148,163,184,0.10) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shine 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-shine {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@keyframes ui-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ui-slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-card,
+.feature-card,
+.issue-card,
+.authority-issue-card,
+.authority-card,
+.notification-item,
+.dashboard-section,
+.auth-card,
+.report-card,
+.profile-container,
+.contact-container {
+  animation: ui-slide-up 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ---------------- Accessibility: reduced motion ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
