@@ -73,8 +73,15 @@ function resolvePythonExecutable(projectRoot) {
   if (explicit) return explicit;
   const candidates = process.platform === "win32"
     ? [path.join(projectRoot, ".venv", "Scripts", "python.exe"), path.join(projectRoot, "ai", "venv", "Scripts", "python.exe")]
-    : [path.join(projectRoot, ".venv", "bin", "python"), path.join(projectRoot, "ai", "venv", "bin", "python")];
-  return candidates.find(fs.existsSync) || "python";
+    : [
+        path.join(projectRoot, ".venv", "bin", "python"),
+        path.join(projectRoot, "ai", "venv", "bin", "python"),
+        path.join(projectRoot, ".venv", "bin", "python3"),
+        path.join(projectRoot, "ai", "venv", "bin", "python3"),
+        "/usr/bin/python3",
+        "/usr/local/bin/python3",
+      ];
+  return candidates.find(fs.existsSync) || (process.platform === "win32" ? "python" : "python3");
 }
 
 let workerProcess = null;

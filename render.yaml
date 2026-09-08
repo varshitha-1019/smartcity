@@ -1,0 +1,32 @@
+services:
+  # 1. SmartCity Backend (Web Service)
+  - type: web
+    name: smartcity-backend
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+  # 2. SmartCity Frontend (Static Site)
+  - type: web
+    name: smartcity-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

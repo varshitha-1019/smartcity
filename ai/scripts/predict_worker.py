@@ -43,8 +43,12 @@ keras_model = None
 
 if tflite_path.exists():
     try:
-        from tensorflow import lite  # Fast lightweight import (~3s)
-        interpreter = lite.Interpreter(model_path=str(tflite_path))
+        try:
+            import tflite_runtime.interpreter as tflite
+            interpreter = tflite.Interpreter(model_path=str(tflite_path))
+        except ImportError:
+            from tensorflow import lite  # Fast lightweight import (~3s)
+            interpreter = lite.Interpreter(model_path=str(tflite_path))
         interpreter.allocate_tensors()
         in_idx = interpreter.get_input_details()[0]["index"]
         out_idx = interpreter.get_output_details()[0]["index"]
